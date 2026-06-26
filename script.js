@@ -37,7 +37,7 @@ const products = [
   },
   {
     name: "Jamu",
-    price: "Rp40.000",
+    price: "Rp15.000",
     image: "assets/product-jamu.jpg",
     composition: "Jahe, Bawang Dayak, Kunyit, Kencur, Gula Aren, Serai, Pandan, Kayu Manis, Kapulaga, Cengkeh, Pinang, Cabe Hutan."
   },
