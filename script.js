@@ -65,6 +65,10 @@ const modalComposition = document.querySelector("#modalComposition");
 const modalOrder = document.querySelector("#modalOrder");
 const navMenu = document.querySelector("#navMenu");
 const menuToggle = document.querySelector("#menuToggle");
+const parallaxItems = Array.from(document.querySelectorAll("[data-parallax]"));
+const prefersReducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+let latestScrollY = 0;
+let rafId = null;
 
 function waLink(productName = "produk Wedang Dayak") {
   const text = `Halo Wedang Dayak, saya ingin pesan ${productName}. Apakah masih tersedia?`;
@@ -171,6 +175,25 @@ navMenu.addEventListener("click", (event) => {
     menuToggle.setAttribute("aria-expanded", "false");
   }
 });
+
+function applyParallax() {
+  rafId = null;
+  parallaxItems.forEach((el) => {
+    const speed = Number(el.dataset.parallax) || 0;
+    const moveY = Math.max(-26, Math.min(26, latestScrollY * (speed / 1200)));
+    el.style.transform = `translate3d(0, ${moveY.toFixed(2)}px, 0)`;
+  });
+}
+
+function requestParallaxUpdate() {
+  latestScrollY = window.scrollY || window.pageYOffset;
+  if (!rafId) rafId = window.requestAnimationFrame(applyParallax);
+}
+
+if (!prefersReducedMotion && parallaxItems.length) {
+  window.addEventListener("scroll", requestParallaxUpdate, { passive: true });
+  requestParallaxUpdate();
+}
 
 renderProducts();
 observeReveals();
